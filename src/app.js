@@ -11,4 +11,7 @@ app.use(express.static("public"));
 app.use("/",router);
 app.set("view engine","ejs");
 
+
+
+
 module.exports=app;
