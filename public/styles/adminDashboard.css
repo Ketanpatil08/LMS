@@ -5,6 +5,7 @@ body {
   min-height: 100vh;
   background: #5d9bff;
   border-right: 1px solid #dee2e6;
+  width: 220px;;
 }
 .sidebar .nav-link {
   color: #333;
