@@ -11,7 +11,9 @@ router.get("/login",(req,res)=>{
 });
 
 
-
+router.get("/userLogin",(req,res)=>{
+    res.render("adminDashboard.ejs");
+});
 
 
 
