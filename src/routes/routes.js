@@ -1,27 +1,12 @@
-const express=require("express");
+const express = require("express");
+const router = express.Router();
+const ctrl = require("../controller/ctrl.js"); // Adjust path if needed
 
-const router=express.Router();
+router.get("/", ctrl.homePage);
+router.get("/login", ctrl.loginPage);
+router.get("/userLogin", ctrl.adminDashboardPage);
+router.get("/adduser", ctrl.addUserPage);
+router.post("/adduser", ctrl.addUser);
 
-
-router.get("/",(req,res)=>{
-    res.render("home")
-});
-
-
-router.get("/login",(req,res)=>{
-     res.render("login.ejs");
-});
-
-
-router.get("/userLogin",(req,res)=>{
-    res.render("adminDashboard.ejs");
-});
-
-router.get("/viewUser",(req,res)=>{
-    res.render("viewUser");
-});
-
-
-
-module.exports=router;
+module.exports = router;
 
