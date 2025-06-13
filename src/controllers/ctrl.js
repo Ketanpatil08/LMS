@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const User = require('../model/model');
+const Category = require('../model/categoryModel');
 
 exports.homePage = (req, res) => {
     res.render("home");
@@ -48,5 +49,28 @@ exports.getAllUsers = async (req, res) => {
         res.render('viewUser.ejs', { users }); // Make sure 'users' is passed
     } catch (err) {
         res.status(500).send('Error fetching users');
+    }
+};
+
+exports.addCategoryPage = (req, res) => {
+    res.render('addCategory.ejs');
+};
+
+exports.addCategory = async (req, res) => {
+    try {
+        const { name } = req.body;
+        await Category.addCategory(name);
+        res.redirect('/viewCategories');
+    } catch (err) {
+        res.status(500).send('Error adding category');
+    }
+};
+
+exports.getAllCategories = async (req, res) => {
+    try {
+        const categories = await Category.getAllCategories();
+        res.render('viewCategories.ejs', { categories });
+    } catch (err) {
+        res.status(500).send('Error fetching categories');
     }
 };
