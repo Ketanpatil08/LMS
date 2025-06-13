@@ -95,7 +95,7 @@ exports.aboutPage = (req, res) => {
     res.render("aboutUs.ejs");
 };
 
-=======
+
 exports.addCategoryPage = (req, res) => {
     res.render('addCategory.ejs');
 };
