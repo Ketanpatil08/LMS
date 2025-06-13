@@ -95,7 +95,7 @@ exports.aboutPage = (req, res) => {
     res.render("aboutUs.ejs");
 };
 
-=======
+
 exports.addCategoryPage = (req, res) => {
     res.render('addCategory.ejs');
 };
@@ -118,4 +118,3 @@ exports.getAllCategories = async (req, res) => {
         res.status(500).send('Error fetching categories');
     }
 };
-
