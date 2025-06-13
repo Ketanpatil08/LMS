@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Add Category</title>
+  <link rel="stylesheet" href="/styles/adminDashboard.css">
+  <link rel="stylesheet" href="/styles/admin.css">
+  <link rel="stylesheet" href="/styles/addCategory.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <%- include('adminSidebar.ejs') %>
+    <div class="main-content">
+      <div class="form-container">
+        <h2 style="font-weight:700; margin-bottom:2rem;">Add Category</h2>
+        <form action="/addCategory" method="POST">
+          <div class="form-group">
+            <input type="text" name="name" id="name" required placeholder="Enter Category Name">
+          </div>
+          <button type="submit" class="add-category-btn">Add Category</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>View Categories</title>
+  <link rel="stylesheet" href="/styles/adminDashboard.css">
+  <link rel="stylesheet" href="/styles/admin.css">
+  <link rel="stylesheet" href="/styles/viewCategories.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <%- include('adminSidebar.ejs') %>
+    <div class="categories-container">
+      <h2 class="categories-title">Categories</h2>
+      <div class="search-bar" style="margin-bottom: 1.5rem; text-align:right;">
+        <input type="text" id="searchInput" placeholder="Search..." style="padding:0.6em 1em; border-radius:8px; border:1px solid #ddd; width:220px;">
+      </div>
+      <div class="table-responsive">
+        <table id="dataTable" class="table table-hover align-middle shadow-sm rounded">
+          <thead>
+            <tr>
+              <th>Sr. No.</th>
+              <th>Category Name</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% categories.forEach((cat, idx) => { %>
+            <tr>
+              <td><%= idx + 1 %></td>
+              <td><%= cat.name %></td>
+              <td>
+                <a href="/categories/update/<%= cat.id %>" class="btn-warning" title="Update">
+                  <i class="fas fa-edit"></i>
+                </a>
+              </td>
+              <td>
+                <form action="/categories/delete/<%= cat.id %>" method="POST" style="display:inline;">
+                  <button type="submit" class="btn-danger" title="Delete" onclick="return confirm('Are you sure?')">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </form>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script>
+  // Search functionality
+  const searchInput = document.getElementById('searchInput');
+  const dataTable = document.getElementById('dataTable');
+
+  searchInput.addEventListener('input', function () {
+      const filter = searchInput.value.toLowerCase();
+      const rows = dataTable.getElementsByTagName('tr');
+
+      Array.from(rows).forEach((row, idx) => {
+          // Skip header row
+          if(idx === 0) return;
+          const cells = row.getElementsByTagName('td');
+          const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+          row.style.display = match ? '' : 'none';
+      });
+  });
+</script>
+</body>
+</html>
