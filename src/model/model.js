@@ -9,3 +9,23 @@ exports.getAllUsers = async () => {
     const [rows] = await db.promise().query('SELECT id, name, email, role, created_at FROM users');
     return rows;
 };
+
+
+// Get user by ID
+exports.getUserById = async (id) => {
+    const [rows] = await db.promise().query("SELECT * FROM users WHERE id = ?", [id]); // ✅ FIXED
+    return rows[0];
+};
+
+
+// Update user
+exports.updateUser = async (id, updatedUser) => {
+    const { name, email, role } = updatedUser;
+    await db.promise().query("UPDATE users SET name=?, email=?, role=? WHERE id=?", [name, email, role, id]);
+};
+
+// Delete user by ID
+exports.deleteUserById = async (id) => {
+    await db.promise().query("DELETE FROM users WHERE id = ?", [id]);
+};
+

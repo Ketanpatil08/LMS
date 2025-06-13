@@ -52,6 +52,50 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
+
+
+// Show update form
+exports.updateUserForm = async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const user = await User.getUserById(userId);
+        res.render("updateUser", { user });  // Ensure "user" is defined
+    } catch (err) {
+        console.error("Error loading user:", err); // Add this line to debug
+        res.status(500).send("Error loading user");
+    }
+};
+
+
+// Handle update submission
+exports.updateUser = async (req, res) => {
+    const userId = req.params.id;
+    const { name, email, role } = req.body;
+
+    try {
+        await User.updateUser(userId, { name, email, role }); // Update user
+        res.redirect("/viewUsers");
+    } catch (err) {
+        res.status(500).send("Error updating user");
+    }
+};
+
+exports.deleteUser = async (req, res) => {
+    const userId = req.params.id;
+    try {
+        await User.deleteUserById(userId);
+        res.redirect("/viewUsers");
+    } catch (err) {
+        console.error("Error deleting user:", err);
+        res.status(500).send("Error deleting user");
+    }
+};
+
+exports.aboutPage = (req, res) => {
+    res.render("aboutUs.ejs");
+};
+
+=======
 exports.addCategoryPage = (req, res) => {
     res.render('addCategory.ejs');
 };
@@ -74,3 +118,4 @@ exports.getAllCategories = async (req, res) => {
         res.status(500).send('Error fetching categories');
     }
 };
+
