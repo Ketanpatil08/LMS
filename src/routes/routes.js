@@ -9,5 +9,13 @@ router.get("/adduser", ctrl.addUserPage);
 router.post("/adduser", ctrl.addUser);
 router.get("/viewUsers", ctrl.getAllUsers);
 
+
+router.get("/updateUser/:id", ctrl.updateUserForm);     // to show form with pre-filled data
+router.post("/updateUser/:id", ctrl.updateUser);        // to save updated data
+
+router.post("/users/delete/:id", ctrl.deleteUser);
+
+router.get("/aboutUs", ctrl.aboutPage);
+
 module.exports = router;
 
