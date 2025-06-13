@@ -36,9 +36,17 @@ exports.addUser = async (req, res) => {
         const { name, email, password, role } = req.body;
         const hashedPassword = await bcrypt.hash(password, 10);
         await User.addUser({ name, email, password: hashedPassword, role });
-        res.redirect('/users'); // or wherever you want to go after adding
+        res.redirect('/viewUsers'); // or wherever you want to go after adding
     } catch (err) {
         res.status(500).send('Error adding user');
     }
 };
 
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.getAllUsers();
+        res.render('viewUser.ejs', { users }); // Make sure 'users' is passed
+    } catch (err) {
+        res.status(500).send('Error fetching users');
+    }
+};
