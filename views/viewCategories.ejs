@@ -2,58 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>View Users</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+  <title>View Categories</title>
   <link rel="stylesheet" href="/styles/adminDashboard.css">
   <link rel="stylesheet" href="/styles/admin.css">
+  <link rel="stylesheet" href="/styles/viewCategories.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  
-  
- 
 </head>
 <body>
   <div class="admin-layout">
     <%- include('adminSidebar.ejs') %>
-    <div class="main-content">
-      <h2 class="mb-4" style="font-weight:700; color:#1976d2;">Users</h2>
-      
+    <div class="categories-container">
+      <h2 class="categories-title">Categories</h2>
       <div class="search-bar" style="margin-bottom: 1.5rem; text-align:right;">
         <input type="text" id="searchInput" placeholder="Search..." style="padding:0.6em 1em; border-radius:8px; border:1px solid #ddd; width:220px;">
       </div>
-      
       <div class="table-responsive">
         <table id="dataTable" class="table table-hover align-middle shadow-sm rounded">
           <thead>
             <tr>
               <th>Sr. No.</th>
-              <th>Name</th>
-              <th>Email / Username</th>
-              <th>Role</th>
-              <th>Admission Date</th>
+              <th>Category Name</th>
               <th>Update</th>
               <th>Delete</th>
             </tr>
           </thead>
           <tbody>
-            <% users.forEach((user, idx) => { %>
+            <% categories.forEach((cat, idx) => { %>
             <tr>
               <td><%= idx + 1 %></td>
-              <td><%= user.name %></td>
-              <td><%= user.email %></td>
+              <td><%= cat.name %></td>
               <td>
-                <span class="badge bg-info"><%= user.role %></span>
-              </td>
-              <td>
-                <%= user.created_at.toLocaleString ? user.created_at.toLocaleString() : user.created_at %>
-              </td>
-              <td>
-                <a href="/updateUser/<%= user.id %>" class="btn btn-sm btn-warning" title="Update">
+                <a href="/categories/update/<%= cat.id %>" class="btn-warning" title="Update">
                   <i class="fas fa-edit"></i>
                 </a>
               </td>
               <td>
-                <form action="/users/delete/<%= user.id %>" method="POST" style="display:inline;">
-                  <button type="submit" class="btn btn-sm btn-danger" title="Delete" onclick="return confirm('Are you sure?')">
+                <form action="/categories/delete/<%= cat.id %>" method="POST" style="display:inline;">
+                  <button type="submit" class="btn-danger" title="Delete" onclick="return confirm('Are you sure?')">
                     <i class="fas fa-trash-alt"></i>
                   </button>
                 </form>
@@ -65,7 +50,6 @@
       </div>
     </div>
   </div>
-
   <script>
   // Search functionality
   const searchInput = document.getElementById('searchInput');
