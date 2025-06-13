@@ -5,6 +5,8 @@
     <title>Add Student</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/adminDashboard.css">
+    <link rel="stylesheet" href="/styles/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body { margin: 0; padding: 0; background: #f4f8fb; }
         .main-content {
@@ -20,7 +22,7 @@
     </style>
 </head>
 <body>
-    <%- include('home.ejs') %>
+    
     <div class="d-flex" style="height:calc(100vh - 56px);">
         <%- include('adminSidebar.ejs') %>
         <div class="main-content">
@@ -46,7 +48,7 @@
                             </select>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-lg px-5" style="font-weight:600;">Add Student</button>
+                            <button type="submit" class="btn btn-primary btn-lg px-5" style="font-weight:600;">Add User</button>
                         </div>
                     </form>
                 </div>
