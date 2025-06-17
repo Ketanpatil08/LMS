@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Update Book</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles/updateBook.css">
+</head>
+<body class="bg-light">
+  <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="update-book-container">
+      <form class="update-book-form" action="/admin/books/update/<%= book.id %>" method="POST">
+        <h2>Update Book</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input id="title" type="text" name="title" class="form-control" value="<%= book.title %>" required>
+          </div>
+          <div class="form-group">
+            <label for="author">Author</label>
+            <input id="author" type="text" name="author" class="form-control" value="<%= book.author %>" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="publisher">Publisher</label>
+            <input id="publisher" type="text" name="publisher" class="form-control" value="<%= book.publisher %>">
+          </div>
+          <div class="form-group">
+            <label for="isbn">ISBN</label>
+            <input id="isbn" type="text" name="isbn" class="form-control" value="<%= book.isbn %>">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="category">Category</label>
+            <select id="category" name="category" class="form-control" required>
+              <% categories.forEach(function(cat) { %>
+                <option value="<%= cat.id %>" <%= cat.id == book.category ? 'selected' : '' %>><%= cat.name %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="total_copies">Total Copies</label>
+            <input id="total_copies" type="number" name="total_copies" class="form-control" value="<%= book.total_copies %>" min="1" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="available_copies">Available Copies</label>
+            <input id="available_copies" type="number" name="available_copies" class="form-control" value="<%= book.available_copies %>" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" name="status" class="form-control">
+              <option value="available" <%= book.status === 'available' ? 'selected' : '' %>>Available</option>
+              <option value="unavailable" <%= book.status === 'unavailable' ? 'selected' : '' %>>Unavailable</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group" style="flex:1;">
+            <label for="image">Image URL</label>
+            <input id="image" type="text" name="image" class="form-control" value="<%= book.image %>">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Book</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

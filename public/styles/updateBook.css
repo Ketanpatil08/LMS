@@ -1,0 +1,80 @@
+body {
+  background: #f6fafd;
+}
+
+.update-book-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.update-book-form {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(60, 60, 60, 0.12);
+  width: 600px;
+  max-width: 95vw;
+}
+
+.update-book-form h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  font-size: 2.5rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #222;
+  font-size: 1.05rem;
+}
+
+.form-group input,
+.form-group select {
+  padding: 6px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  background: #f8fafd;
+  transition: border 0.2s;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #2196f3;
+  background: #fff;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px 0;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+}
