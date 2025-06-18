@@ -217,6 +217,12 @@ exports.deleteCategory = async (req, res) => {
     res.redirect('/viewCategories');
 };
 
+exports.logout = (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/login');
+  });
+};
+
 // exports.viewUsers = async (req, res) => {
 //   const page = parseInt(req.query.page) || 1;
 //   const limit = 5;

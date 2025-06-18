@@ -34,7 +34,7 @@ router.get('/updateCategory/:id', ctrl.updateCategoryForm);
 router.post("/updateCategory/:id", ctrl.updateCategory);  
 
 router.post("/deleteCategory/delete/:id", ctrl.deleteCategory); 
-
+router.get('/logout', ctrl.logout);
 
 module.exports = router;
 

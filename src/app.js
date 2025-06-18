@@ -1,16 +1,23 @@
-let express=require("express");
-let session=require("express-session");
-let app=express();
-let bodyParser=require("body-parser");
-let router=require("../src/routes/routes.js");
-let conn=require("./config/db.js");
-app.use(bodyParser.urlencoded({extended:true}));
+const express = require('express');
+const session = require('express-session');
+const app = express();
+const bodyParser = require('body-parser');
+const router = require('../src/routes/routes.js');
+const conn = require('./config/db.js');
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static("public"));
+app.use(express.static('public'));
 
-app.use("/",router);
-app.set("view engine","ejs");
+app.use(session({
+  secret: 'yourSecretKey', // use a strong secret in production
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use('/', router);
+app.set('view engine', 'ejs');
 
 
 
-module.exports=app;
+module.exports = app;
