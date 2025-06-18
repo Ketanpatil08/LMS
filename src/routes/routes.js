@@ -29,6 +29,7 @@ router.get('/admin/books', ctrl.viewBooks);
 router.get('/admin/books/update/:id', ctrl.updateBookPage);
 router.post('/admin/books/update/:id', ctrl.updateBook);
 router.post('/admin/books/delete/:id', ctrl.deleteBook);
+router.get('/logout', ctrl.logout); // Added logout route
 
 module.exports = router;
 

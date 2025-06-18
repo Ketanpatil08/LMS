@@ -214,29 +214,9 @@ exports.deleteCategory = async (req, res) => {
     res.redirect('/viewCategories');
 };
 
-// exports.viewUsers = async (req, res) => {
-//   const page = parseInt(req.query.page) || 1;
-//   const limit = 5;
-//   const offset = (page - 1) * limit;
-
-//   const [[{ count }]] = await db.promise().query('SELECT COUNT(*) as count FROM users');
-//   const totalPages = Math.ceil(count / limit);
-
-//   const [users] = await db.promise().query('SELECT * FROM users LIMIT ? OFFSET ?', [limit, offset]);
-
-//   res.render('viewUser', { users, page, totalPages });
-// };
-
-// exports.viewCategories = async (req, res) => {
-//   const page = parseInt(req.query.page) || 1;
-//   const limit = 5;
-//   const offset = (page - 1) * limit;
-
-//   const [[{ count }]] = await db.promise().query('SELECT COUNT(*) as count FROM categories');
-//   const totalPages = Math.ceil(count / limit);
-
-//   const [categories] = await db.promise().query('SELECT * FROM categories LIMIT ? OFFSET ?', [limit, offset]);
-
-//   res.render('viewCategories', { categories, page, totalPages });
-// };
+exports.logout = (req, res) => {
+  req.session.destroy(() => {
+    res.redirect('/login');
+  });
+};
 

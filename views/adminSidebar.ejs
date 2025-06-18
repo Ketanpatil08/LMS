@@ -1,26 +1,65 @@
-<div class="sidebar">
-    <h2>Admin Dashboard</h2>
-    <b>User</b>
+<link rel="stylesheet" href="/styles/adminSidebar.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<div class="sidebar-dark d-flex flex-column" style="height: 100vh;">
+  <div class="sidebar-logo d-flex align-items-center justify-content-between">
     <div>
-        <a href="/adduser"><i class="fas fa-user-plus"></i> Add User</a>
+      <img src="/images/library.jpg" alt="Library Logo" class="logo-img">
+      <span class="logo-text">Library Admin</span>
     </div>
-    <div>
-        <a href="/viewUsers"><i class="fas fa-users"></i> View User</a>
+    <!-- <a href="/" class="home-icon" title="Go to Home">
+      <i class="fa-solid fa-house"></i>
+    </a> -->
+  </div>
+  <div class="sidebar-section flex-grow-1">
+    <div class="sidebar-group">
+      <div class="sidebar-title" onclick="toggleSidebarMenu('userMenu')">
+        <i class="fa-solid fa-users-gear"></i> User
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </div>
+      <div class="sidebar-menu" id="userMenu">
+        <a href="/addUser"><i class="fa-solid fa-user-plus"></i> Add User</a>
+        <a href="/viewUsers"><i class="fa-solid fa-users"></i> View User</a>
+      </div>
     </div>
-    <br>
-    <b>Category</b>
-    <div>
-        <a href="/addCategory"><i class="fas fa-folder-plus"></i> Add Category</a>
+    <div class="sidebar-group">
+      <div class="sidebar-title" onclick="toggleSidebarMenu('categoryMenu')">
+        <i class="fa-solid fa-layer-group"></i> Category
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </div>
+      <div class="sidebar-menu" id="categoryMenu">
+        <a href="/addCategory"><i class="fa-solid fa-folder-plus"></i> Add Category</a>
+        <a href="/viewCategories"><i class="fa-solid fa-folder-open"></i> View Categories</a>
+      </div>
     </div>
-    <div>
-        <a href="/viewCategories"><i class="fas fa-folder-open"></i> View Categories</a>
+    <div class="sidebar-group">
+      <div class="sidebar-title" onclick="toggleSidebarMenu('bookMenu')">
+        <i class="fa-solid fa-book"></i> Book
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </div>
+      <div class="sidebar-menu" id="bookMenu">
+        <a href="/addBook"><i class="fa-solid fa-book-medical"></i> Add Book</a>
+        <a href="/admin/books"><i class="fa-solid fa-book-open"></i> View Books</a>
+      </div>
     </div>
-    <br>
-    <b>Book</b>
-    <div>
-        <a href="/addBook"><i class="fas fa-book-medical"></i> Add Book</a>
-    </div>
-    <div>
-        <a href="/admin/books"><i class="fas fa-book-open"></i> View Books</a>
-    </div>
+  </div>
+  <div class="sidebar-logout mb-3">
+    <a href="/logout" class="logout-btn">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </a>
+  </div>
 </div>
+
+<script>
+function toggleSidebarMenu(menuId) {
+  document.querySelectorAll('.sidebar-menu').forEach(menu => {
+    if (menu.id === menuId) {
+      menu.classList.toggle('show');
+      menu.previousElementSibling.querySelector('.chevron').classList.toggle('rotate');
+    } else {
+      menu.classList.remove('show');
+      menu.previousElementSibling.querySelector('.chevron').classList.remove('rotate');
+    }
+  });
+}
+</script>

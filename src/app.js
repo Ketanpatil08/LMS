@@ -8,6 +8,12 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
+app.use(session({
+  secret: '1111111111',
+  resave: false,
+  saveUninitialized: false
+}));
+
 app.use("/",router);
 app.set("view engine","ejs");
 
