@@ -30,5 +30,11 @@ router.get('/admin/books/update/:id', ctrl.updateBookPage);
 router.post('/admin/books/update/:id', ctrl.updateBook);
 router.post('/admin/books/delete/:id', ctrl.deleteBook);
 
+router.get('/updateCategory/:id', ctrl.updateCategoryForm);   
+router.post("/updateCategory/:id", ctrl.updateCategory);  
+
+router.post("/deleteCategory/delete/:id", ctrl.deleteCategory); 
+
+
 module.exports = router;
 
