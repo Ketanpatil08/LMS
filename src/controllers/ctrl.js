@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const User = require('../model/model');
 const Category = require('../model/categoryModel');
 
+
+
 exports.homePage = (req, res) => {
     res.render("home");
 };
@@ -116,5 +118,39 @@ exports.getAllCategories = async (req, res) => {
         res.render('viewCategories.ejs', { categories });
     } catch (err) {
         res.status(500).send('Error fetching categories');
+    }
+};
+
+exports.updateCategoryForm = async (req, res) => {
+    const categoryId = req.params.id;
+
+    try {
+        const category = await Category.getCategoryById(categoryId); 
+        res.render('updateCategories', { category });
+    } catch (err) {
+        console.error("Error in updateCategoryForm:", err); 
+        res.status(500).send("Error loading update form");
+    }
+};
+
+
+
+exports.updateCategory = async (req, res) => {
+  const categoryId = req.params.id;
+ const { name } = req.body;
+await Category.updateCategory(categoryId, { name });
+  res.redirect("/viewCategories");
+};
+
+
+
+exports.deleteCategory = async (req, res) => {
+    const id = req.params.id;
+    try {
+        await Category.deleteCategoryById(id);
+        res.redirect("/category");
+    } catch (err) {
+        console.error("Error deleting category:", err);
+        res.send("Error deleting category: " + err.message);
     }
 };

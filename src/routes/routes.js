@@ -20,5 +20,11 @@ router.post("/users/delete/:id", ctrl.deleteUser);
 
 router.get("/aboutUs", ctrl.aboutPage);
 
+router.get('/updateCategory/:id', ctrl.updateCategoryForm);   
+router.post("/updateCategory/:id", ctrl.updateCategory);  
+
+router.post("/deleteCategory/delete/:id", ctrl.deleteCategory); 
+
+
 module.exports = router;
 

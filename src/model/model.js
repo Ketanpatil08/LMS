@@ -29,3 +29,16 @@ exports.deleteUserById = async (id) => {
     await db.promise().query("DELETE FROM users WHERE id = ?", [id]);
 };
 
+const deleteCategoryById = (id) => {
+    return db.query("DELETE FROM category WHERE id = ?", [id]);
+};
+
+// Export it
+module.exports = {
+    deleteCategoryById,
+    // other exported functions like getAllCategories, addCategory etc.
+};
+
+
+
+
