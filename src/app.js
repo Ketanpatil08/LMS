@@ -7,10 +7,10 @@ const conn = require('./config/db.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 app.use(session({
-  secret: 'yourSecretKey', // use a strong secret in production
+  secret: '1111111111',
   resave: false,
   saveUninitialized: false
 }));
