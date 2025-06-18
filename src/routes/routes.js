@@ -29,12 +29,13 @@ router.get('/admin/books', ctrl.viewBooks);
 router.get('/admin/books/update/:id', ctrl.updateBookPage);
 router.post('/admin/books/update/:id', ctrl.updateBook);
 router.post('/admin/books/delete/:id', ctrl.deleteBook);
+router.get('/logout', ctrl.logout); // Added logout route
 
 router.get('/updateCategory/:id', ctrl.updateCategoryForm);   
 router.post("/updateCategory/:id", ctrl.updateCategory);  
 
 router.post("/deleteCategory/delete/:id", ctrl.deleteCategory); 
-
+router.get('/logout', ctrl.logout);
 
 module.exports = router;
 
