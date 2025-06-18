@@ -31,5 +31,11 @@ router.post('/admin/books/update/:id', ctrl.updateBook);
 router.post('/admin/books/delete/:id', ctrl.deleteBook);
 router.get('/logout', ctrl.logout); // Added logout route
 
+router.get('/updateCategory/:id', ctrl.updateCategoryForm);   
+router.post("/updateCategory/:id", ctrl.updateCategory);  
+
+router.post("/deleteCategory/delete/:id", ctrl.deleteCategory); 
+
+
 module.exports = router;
 

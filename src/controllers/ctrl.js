@@ -4,6 +4,8 @@ const Category = require('../model/categoryModel');
 const Book = require('../model/bookModel'); // Add this at the top
 const db = require('../config/db');
 
+
+
 exports.homePage = (req, res) => {
     res.render("home");
 };
@@ -169,6 +171,7 @@ exports.viewBooks = async (req, res) => {
 
   res.render('viewBooks', { books, page, totalPages });
 };
+
 
 // Show update form
 exports.updateBookPage = async (req, res) => {
