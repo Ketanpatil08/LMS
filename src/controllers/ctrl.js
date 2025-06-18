@@ -4,8 +4,6 @@ const Category = require('../model/categoryModel');
 const Book = require('../model/bookModel'); // Add this at the top
 const db = require('../config/db');
 
-
-
 exports.homePage = (req, res) => {
     res.render("home");
 };
@@ -114,6 +112,7 @@ exports.addCategory = async (req, res) => {
         await Category.addCategory(name);
         res.redirect('/viewCategories');
     } catch (err) {
+        console.log(err);
         res.status(500).send('Error adding category');
     }
 };
@@ -171,7 +170,6 @@ exports.viewBooks = async (req, res) => {
 
   res.render('viewBooks', { books, page, totalPages });
 };
-
 
 // Show update form
 exports.updateBookPage = async (req, res) => {
