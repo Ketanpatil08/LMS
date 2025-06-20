@@ -24,20 +24,7 @@ exports.updateUser = async (id, updatedUser) => {
     await db.promise().query("UPDATE users SET name=?, email=?, role=? WHERE id=?", [name, email, role, id]);
 };
 
-// Delete user by ID
-exports.deleteUserById = async (id) => {
-    await db.promise().query("DELETE FROM users WHERE id = ?", [id]);
-};
 
-const deleteCategoryById = (id) => {
-    return db.query("DELETE FROM category WHERE id = ?", [id]);
-};
-
-// Export it
-module.exports = {
-    deleteCategoryById,
-    // other exported functions like getAllCategories, addCategory etc.
-};
 
 
 

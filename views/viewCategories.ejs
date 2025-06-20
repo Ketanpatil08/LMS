@@ -33,12 +33,12 @@
               <td><%= idx + 1 %></td>
               <td><%= cat.name %></td>
               <td>
-                <a href="/updateCategory/<%= cat.id %>" class="btn-warning" title="Update">
+                <a href="/categories/update/<%= cat.id %>" class="btn-warning" title="Update">
                   <i class="fas fa-edit"></i>
                 </a>
               </td>
               <td>
-                <form action="/deleteCategory/delete/<%= cat.id %>" method="POST" style="display:inline;">
+                <form action="/categories/delete/<%= cat.id %>" method="POST" style="display:inline;">
                   <button type="submit" class="btn-danger" title="Delete" onclick="return confirm('Are you sure?')">
                     <i class="fas fa-trash-alt"></i>
                   </button>

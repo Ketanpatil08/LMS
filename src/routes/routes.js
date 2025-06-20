@@ -15,14 +15,12 @@ router.post("/users/delete/:id", ctrl.deleteUser);
 router.get("/addCategory", ctrl.addCategoryPage);
 router.post("/addCategory", ctrl.addCategory);
 router.get("/viewCategories", ctrl.getAllCategories);
-// router.get('/categories/update/:id', ctrl.updateCategoryPage);
-// router.post('/categories/update/:id', ctrl.updateCategory);
-// router.post('/categories/delete/:id', ctrl.deleteCategory);
+router.get('/categories/update/:id', ctrl.updateCategoryPage);
+router.post('/categories/update/:id', ctrl.updateCategory);
+router.post('/categories/delete/:id', ctrl.deleteCategory);
 
-router.get('/updateCategory/:id', ctrl.updateCategoryPage);   
-router.post("/updateCategory/:id", ctrl.updateCategory);  
 
-router.post("/deleteCategory/delete/:id", ctrl.deleteCategory); 
+
 
 router.get("/aboutUs", ctrl.aboutPage);
 router.get('/addBook', ctrl.addBookPage);
@@ -32,8 +30,4 @@ router.get('/admin/books/update/:id', ctrl.updateBookPage);
 router.post('/admin/books/update/:id', ctrl.updateBook);
 router.post('/admin/books/delete/:id', ctrl.deleteBook);
 
-
-
-
 module.exports = router;
-

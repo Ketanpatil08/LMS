@@ -112,7 +112,6 @@ exports.addCategory = async (req, res) => {
         await Category.addCategory(name);
         res.redirect('/viewCategories');
     } catch (err) {
-        console.log(err);
         res.status(500).send('Error adding category');
     }
 };
@@ -240,4 +239,3 @@ exports.deleteCategory = async (req, res) => {
 
 //   res.render('viewCategories', { categories, page, totalPages });
 // };
-
