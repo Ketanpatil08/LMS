@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Issued/Returned Books</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles/adminSidebar.css">
+  <link rel="stylesheet" href="/styles/returnedBooks.css">
+</head>
+<body style="background: #f6f8fa;">
+  <div class="d-flex">
+    <%- include('adminSidebar.ejs') %>
+    <div class="issued-books-container flex-grow-1">
+      <div class="issued-books-title">Issued/Returned Books</div>
+      <div class="search-bar">
+        <select id="searchType">
+          <option value="all">All</option>
+          <option value="book">Book Name</option>
+          <option value="user">User Name</option>
+        </select>
+        <input type="text" id="searchInput" class="form-control" placeholder="Search...">
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="minimal-table" id="dataTable">
+          <thead>
+            <tr>
+              <th>Book</th>
+              <th>User</th>
+              <th>Email</th>
+              <th>Issue Date</th>
+              <th>Return Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% issues.forEach(issue => { %>
+              <tr>
+                <td><%= issue.book_title %></td>
+                <td><%= issue.user_name %></td>
+                <td><%= issue.user_email %></td>
+                <td><%= issue.issue_date.toISOString().slice(0,10) %></td>
+                <td><%= issue.return_date ? issue.return_date.toISOString().slice(0,10) : '' %></td>
+                <td>
+                  <% if(issue.status === 'issued' || issue.status === 'overdue') { %>
+                    <form action="/admin/return-book/<%= issue.id %>" method="POST" style="display:inline;">
+                      <button type="submit" class="btn btn-sm btn-success">
+                        <i class="fa-solid fa-rotate-left"></i> Return
+                      </button>
+                    </form>
+                  <% } %>
+                  <% if(issue.status === 'returned') { %>
+                    <span class="badge-status badge-returned">Returned</span>
+                  <% } else if(issue.status === 'overdue') { %>
+                    <span class="badge-status badge-overdue">Overdue</span>
+                  <% } else if(issue.status === 'issued') { %>
+                    <span class="badge-status badge-issued">Issued</span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Enhanced search functionality
+    const searchInput = document.getElementById('searchInput');
+    const searchType = document.getElementById('searchType');
+    const dataTable = document.getElementById('dataTable');
+
+    searchInput.addEventListener('input', filterTable);
+    searchType.addEventListener('change', filterTable);
+
+    function filterTable() {
+      const filter = searchInput.value.toLowerCase();
+      const type = searchType.value;
+      const rows = dataTable.getElementsByTagName('tr');
+      Array.from(rows).forEach((row, idx) => {
+        if(idx === 0) return; // skip header
+        const cells = row.getElementsByTagName('td');
+        let match = false;
+        if(type === 'book') {
+          match = cells[0].textContent.toLowerCase().includes(filter);
+        } else if(type === 'user') {
+          match = cells[1].textContent.toLowerCase().includes(filter);
+        } else {
+          match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(filter));
+        }
+        row.style.display = match ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

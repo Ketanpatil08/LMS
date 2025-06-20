@@ -20,6 +20,33 @@
             align-items: center;
             justify-content: flex-start;
         }
+        body {
+            background: #f6f8fa;
+        }
+        .dashboard-cards {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .dashboard-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 220px;
+        }
+        .dashboard-card-title {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .dashboard-card-value {
+            font-size: 24px;
+            color: #296ed6;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -27,7 +54,27 @@
     <div class="d-flex" style="height:calc(100vh - 56px);">
         <%- include('adminSidebar.ejs') %>
         <div class="main-content">
-            <!-- Dashboard content here -->
+            <div class="container mt-5">
+                <h2 class="mb-4" style="color:#296ed6;">Admin Dashboard</h2>
+                <div class="dashboard-cards">
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-title">Total Books</div>
+                        <div class="dashboard-card-value"><%= total_books %></div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-title">Issued Books</div>
+                        <div class="dashboard-card-value"><%= issued_books %></div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-title">Returned Books</div>
+                        <div class="dashboard-card-value"><%= returned_books %></div>
+                    </div>
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-title">Overdue Books</div>
+                        <div class="dashboard-card-value"><%= overdue_books %></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Bootstrap JS CDN -->

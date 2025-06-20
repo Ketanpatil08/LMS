@@ -1,26 +1,78 @@
-<div class="sidebar">
-    <h2>Admin Dashboard</h2>
-    <b>User</b>
-    <div>
-        <a href="/adduser"><i class="fas fa-user-plus"></i> Add User</a>
+<link rel="stylesheet" href="/styles/adminSidebar.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<div class="sidebar-dark d-flex flex-column">
+  <div class="sidebar-logo">
+    <img src="/images/library.jpg" alt="Library Logo" class="logo-img">
+    <span class="logo-text">Library Admin</span>
+  </div>
+  <div class="sidebar-section flex-grow-1">
+    <div class="sidebar-group">
+      <a href="/admin/dashboard" class="sidebar-link">
+        <span class="sidebar-emoji">📊</span> Dashboard
+      </a>
     </div>
-    <div>
-        <a href="/viewUsers"><i class="fas fa-users"></i> View User</a>
+    <div class="sidebar-group">
+      <div class="sidebar-title" onclick="toggleSidebarMenu('userMenu')">
+        <span class="sidebar-emoji">👥</span> User
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </div>
+      <div class="sidebar-menu" id="userMenu">
+        <a href="/addUser"><span class="sidebar-emoji">➕</span> Add User</a>
+        <a href="/viewUsers"><span class="sidebar-emoji">👤</span> View User</a>
+      </div>
     </div>
-    <br>
-    <b>Category</b>
-    <div>
-        <a href="/addCategory"><i class="fas fa-folder-plus"></i> Add Category</a>
+    <div class="sidebar-group">
+      <div class="sidebar-title" onclick="toggleSidebarMenu('categoryMenu')">
+        <span class="sidebar-emoji">🗂️</span> Category
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </div>
+      <div class="sidebar-menu" id="categoryMenu">
+        <a href="/addCategory"><span class="sidebar-emoji">➕</span> Add Category</a>
+        <a href="/viewCategories"><span class="sidebar-emoji">📂</span> View Categories</a>
+      </div>
     </div>
-    <div>
-        <a href="/viewCategories"><i class="fas fa-folder-open"></i> View Categories</a>
+    <div class="sidebar-group">
+      <div class="sidebar-title" onclick="toggleSidebarMenu('bookMenu')">
+        <span class="sidebar-emoji">📚</span> Book
+        <i class="fa-solid fa-chevron-down chevron"></i>
+      </div>
+      <div class="sidebar-menu" id="bookMenu">
+        <a href="/addBook"><span class="sidebar-emoji">➕</span> Add Book</a>
+        <a href="/admin/books"><span class="sidebar-emoji">📖</span> View Books</a>
+      </div>
     </div>
-    <br>
-    <b>Book</b>
-    <div>
-        <a href="/addBook"><i class="fas fa-book-medical"></i> Add Book</a>
+    <div class="sidebar-group">
+      <a href="/admin/issue-book" class="sidebar-link">
+        <span class="sidebar-emoji">📝</span> Issue Book
+      </a>
     </div>
-    <div>
-        <a href="/admin/books"><i class="fas fa-book-open"></i> View Books</a>
+    <div class="sidebar-group">
+      <a href="/admin/issued-books" class="sidebar-link">
+        <span class="sidebar-emoji">📦</span> Issued Books
+      </a>
+      <a href="/admin/returned-books" class="sidebar-link">
+        <span class="sidebar-emoji">🔄</span> Returned Books
+      </a>
     </div>
+  </div>
+  <div class="sidebar-logout mb-3">
+    <a href="/logout" class="logout-btn">
+      <span class="sidebar-emoji">🚪</span> Logout
+    </a>
+  </div>
 </div>
+
+<script>
+function toggleSidebarMenu(menuId) {
+  document.querySelectorAll('.sidebar-menu').forEach(menu => {
+    if (menu.id === menuId) {
+      menu.classList.toggle('show');
+      menu.previousElementSibling.querySelector('.chevron').classList.toggle('rotate');
+    } else {
+      menu.classList.remove('show');
+      menu.previousElementSibling.querySelector('.chevron').classList.remove('rotate');
+    }
+  });
+}
+</script>

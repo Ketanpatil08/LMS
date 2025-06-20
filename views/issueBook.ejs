@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Issue Book</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/styles/adminSidebar.css">
+</head>
+<body>
+  <div class="d-flex">
+    <%- include('adminSidebar.ejs') %>
+    <div class="container mt-5" style="max-width: 500px;">
+      <h2 class="mb-4">Issue Book</h2>
+      <% if (message) { %>
+        <div class="alert alert-info"><%= message %></div>
+      <% } %>
+      <form action="/admin/issue-book" method="POST">
+        <div class="form-group">
+          <label for="book_id">Book</label>
+          <select name="book_id" id="book_id" class="form-control" required>
+            <% books.forEach(book => { %>
+              <option value="<%= book.id %>"><%= book.title %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="name">Student Name</label>
+          <input type="text" name="name" id="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Student Email</label>
+          <input type="email" name="email" id="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label>Issue Date</label>
+          <input type="text" class="form-control" value="<%= new Date().toISOString().slice(0,10) %>" readonly>
+        </div>
+        <div class="form-group">
+          <label for="return_date">Return Date (within 7 days)</label>
+          <input type="date" name="return_date" id="return_date" class="form-control"
+            min="<%= new Date().toISOString().slice(0,10) %>"
+            max="<%= (() => { let d = new Date(); d.setDate(d.getDate()+7); return d.toISOString().slice(0,10); })() %>"
+            required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Issue Book</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
