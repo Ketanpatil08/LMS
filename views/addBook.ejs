@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/styles/addBook.css">
     <link rel="stylesheet" href="/styles/adminSidebar.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     
   <!-- You can create addBook.css for custom styles if needed -->
 </head>
@@ -41,10 +42,9 @@
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <select name="category" class="form-control" required>
-                <option value="">Select category</option>
-                <% categories.forEach(function(cat) { %>
-                  <option value="<%= cat.name %>"><%= cat.name %></option>
+              <select name="categories" id="categories" class="form-control" multiple required>
+                <% categories.forEach(cat => { %>
+                  <option value="<%= cat.id %>"><%= cat.name %></option>
                 <% }) %>
               </select>
             </div>
@@ -68,10 +68,26 @@
               <input type="text" name="image" class="form-control" placeholder="Enter image URL">
             </div>
           </div>
+         
           <button type="submit" class="btn-primary btn-block">Add Book</button>
         </form>
       </div>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const element = document.getElementById('categories');
+    if (element) {
+      new Choices(element, {
+        removeItemButton: true,
+        placeholder: true,
+        placeholderValue: 'Select categories',
+        searchEnabled: true,
+        shouldSort: false
+      });
+    }
+  });
+</script>
 </body>
 </html>

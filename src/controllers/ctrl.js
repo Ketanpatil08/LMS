@@ -28,8 +28,12 @@ exports.userLogin=(req,res)=>{
 }
 
 
-exports.adminDashboardPage = (req, res) => {
-    res.render("adminDashboard.ejs");
+exports.adminDashboardPage = async (req, res) => {
+  const [[{ total_books }]] = await db.promise().query('SELECT COUNT(*) AS total_books FROM books');
+  const [[{ issued_books }]] = await db.promise().query("SELECT COUNT(*) AS issued_books FROM issue_details WHERE status='issued'");
+  const [[{ returned_books }]] = await db.promise().query("SELECT COUNT(*) AS returned_books FROM issue_details WHERE status='returned'");
+  const [[{ overdue_books }]] = await db.promise().query("SELECT COUNT(*) AS overdue_books FROM issue_details WHERE status='overdue'");
+  res.render('adminDashboard', { total_books, issued_books, returned_books, overdue_books });
 };
 
 exports.addUserPage = (req, res) => {
@@ -135,26 +139,34 @@ exports.getAllCategories = async (req, res) => {
 
 // GET: Show Add Book form
 exports.addBookPage = async (req, res) => {
-  const [categories] = await db.promise().query('SELECT id, name FROM categories');
+  const [categories] = await db.promise().query('SELECT * FROM categories');
   res.render('addBook', { categories });
 };
 
 // POST: Handle Add Book form submission
 exports.addBook = async (req, res) => {
-  try {
-    const { title, author, publisher, isbn, category, total_copies, available_copies, status, image } = req.body;
-        // Basic validation
-        if (!title || !author || !category) {
-            const [categories] = await db.promise().query('SELECT id, name FROM categories order by id asc');
-            return res.render('addBook', { categories, message: 'Title, author, and category are required.', messageType: 'error' });
-        }
-        await Book.addBook({ title, author, publisher, isbn, category, total_copies, available_copies, status, image });
-        const [categories] = await db.promise().query('SELECT id, name FROM categories');
-        res.render('addBook.ejs', { categories, message: 'Book added successfully!', messageType: 'success' });
-  } catch (err) {
-    const [categories] = await db.promise().query('SELECT id, name FROM categories');
-    res.render('addBook', { categories, message: 'Internal server error', messageType: 'error' });
+  const { title, author, publisher, isbn, total_copies, available_copies, status, image } = req.body;
+  let categories = req.body.categories; // Will be an array if multiple selected
+
+  // Insert the book
+  const [result] = await db.promise().query(
+    'INSERT INTO books (title, author, publisher, isbn, total_copies, available_copies, status, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    [title, author, publisher, isbn, total_copies, available_copies, status, image]
+  );
+  const book_id = result.insertId;
+
+  // Ensure categories is always an array
+  if (!Array.isArray(categories)) categories = [categories];
+
+  // Insert into book_categories
+  for (const category_id of categories) {
+    await db.promise().query(
+      'INSERT INTO book_categories (book_id, category_id) VALUES (?, ?)',
+      [book_id, category_id]
+    );
   }
+
+  res.redirect('/admin/books');
 };
 
 exports.viewBooks = async (req, res) => {
@@ -193,7 +205,14 @@ exports.updateBook = async (req, res) => {
 };
 
 exports.deleteBook = async (req, res) => {
-  await db.promise().query('DELETE FROM books WHERE id = ?', [req.params.id]);
+  const bookId = req.params.id;
+  // Check for references in issue_details
+  const [rows] = await db.promise().query('SELECT COUNT(*) AS cnt FROM issue_details WHERE book_id = ?', [bookId]);
+  if (rows[0].cnt > 0) {
+    // Book is referenced, cannot delete
+    return res.status(400).send('Cannot delete: Book is issued or has history.');
+  }
+  await db.promise().query('DELETE FROM books WHERE id = ?', [bookId]);
   res.redirect('/admin/books');
 };
 
@@ -248,4 +267,103 @@ exports.logout = (req, res) => {
 
 //   res.render('viewCategories', { categories, page, totalPages });
 // };
+
+// Show Issue Book form
+exports.issueBookPage = async (req, res) => {
+  const [books] = await db.promise().query('SELECT id, title FROM books');
+  res.render('issueBook', { books, message: null });
+};
+
+// Handle Issue Book form submission
+exports.issueBook = async (req, res) => {
+  const { book_id, name, email, return_date } = req.body;
+  const [books] = await db.promise().query('SELECT id, title FROM books');
+  const [users] = await db.promise().query('SELECT id FROM users WHERE email = ?', [email]);
+  if (users.length === 0) {
+    return res.render('issueBook', { books, message: 'User not found with this email.' });
+  }
+  // Check available copies
+  const [[book]] = await db.promise().query('SELECT available_copies FROM books WHERE id = ?', [book_id]);
+  if (!book || book.available_copies <= 0) {
+    return res.render('issueBook', { books, message: 'No available copies for this book.' });
+  }
+  const issued_by = users[0].id;
+  const issue_date = new Date();
+  const selectedReturnDate = new Date(return_date);
+  const maxReturnDate = new Date(issue_date);
+  maxReturnDate.setDate(issue_date.getDate() + 7);
+
+  if (selectedReturnDate < issue_date || selectedReturnDate > maxReturnDate) {
+    return res.render('issueBook', { books, message: 'Return date must be within 7 days from today.' });
+  }
+
+  await db.promise().query(
+    'INSERT INTO issue_details (book_id, issued_by, issue_date, return_date, status) VALUES (?, ?, ?, ?, ?)',
+    [book_id, issued_by, issue_date, selectedReturnDate, 'issued']
+  );
+  await db.promise().query(
+    'UPDATE books SET available_copies = available_copies - 1 WHERE id = ?', [book_id]
+  );
+  res.render('issueBook', { books, message: 'Book issued successfully!' });
+};
+
+exports.returnBook = async (req, res) => {
+  const id = req.params.id;
+  // Get the issue details
+  const [[issue]] = await db.promise().query('SELECT return_date FROM issue_details WHERE id = ?', [id]);
+  if (!issue) return res.redirect('/admin/returned-books');
+  const today = new Date();
+  const returnDate = new Date(issue.return_date);
+  let status = 'returned';
+  if (today > returnDate) status = 'overdue';
+
+  // Update status
+  await db.promise().query('UPDATE issue_details SET status = ? WHERE id = ?', [status, id]);
+
+  // Increment available copies
+  await db.promise().query(`
+    UPDATE books 
+    SET available_copies = available_copies + 1 
+    WHERE id = (SELECT book_id FROM issue_details WHERE id = ?)
+  `, [id]);
+
+  res.redirect('/admin/returned-books');
+};
+
+exports.issuedBooksPage = async (req, res) => {
+  const [rows] = await db.promise().query(`
+    SELECT 
+      issue_details.id,
+      books.title AS book_title,
+      users.name AS user_name,
+      users.email AS user_email,
+      issue_details.issue_date,
+      issue_details.return_date,
+      issue_details.status
+    FROM issue_details
+    JOIN books ON books.id = issue_details.book_id
+    JOIN users ON users.id = issue_details.issued_by
+    ORDER BY issue_details.issue_date DESC
+  `);
+  res.render('issuedBooks', { issues: rows });
+};
+
+exports.returnedBooksPage = async (req, res) => {
+  const [rows] = await db.promise().query(`
+    SELECT 
+      issue_details.id,
+      books.title AS book_title,
+      users.name AS user_name,
+      users.email AS user_email,
+      issue_details.issue_date,
+      issue_details.return_date,
+      issue_details.status
+    FROM issue_details
+    JOIN books ON books.id = issue_details.book_id
+    JOIN users ON users.id = issue_details.issued_by
+    WHERE issue_details.status = 'issued' OR issue_details.status = 'overdue'
+    ORDER BY issue_details.issue_date DESC
+  `);
+  res.render('returnedBooks', { issues: rows });
+};
 
