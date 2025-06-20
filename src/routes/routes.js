@@ -4,6 +4,7 @@ const ctrl = require("../controllers/ctrl.js"); // Adjust path if needed
 
 router.get("/", ctrl.homePage);
 router.get("/login", ctrl.loginPage);
+router.get('/admin/dashboard', ctrl.adminDashboardPage);
 router.post("/userLogin", ctrl.adminDashboardPage);
 router.get("/adduser", ctrl.addUserPage);
 router.post("/adduser", ctrl.addUser);
@@ -30,12 +31,11 @@ router.get('/admin/books/update/:id', ctrl.updateBookPage);
 router.post('/admin/books/update/:id', ctrl.updateBook);
 router.post('/admin/books/delete/:id', ctrl.deleteBook);
 router.get('/logout', ctrl.logout); // Added logout route
-
-router.get('/updateCategory/:id', ctrl.updateCategoryForm);   
-router.post("/updateCategory/:id", ctrl.updateCategory);  
-
-router.post("/deleteCategory/delete/:id", ctrl.deleteCategory); 
-router.get('/logout', ctrl.logout);
+router.get('/admin/issue-book', ctrl.issueBookPage);
+router.post('/admin/issue-book', ctrl.issueBook);
+router.get('/admin/issued-books', ctrl.issuedBooksPage);
+router.get('/admin/returned-books', ctrl.returnedBooksPage);
+router.post('/admin/return-book/:id', ctrl.returnBook);
 
 module.exports = router;
 

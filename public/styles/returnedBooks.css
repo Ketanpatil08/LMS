@@ -1,0 +1,90 @@
+.issued-books-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(44, 62, 80, 0.08);
+  padding: 32px 36px;
+}
+
+.issued-books-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #296ed6;
+  margin-bottom: 28px;
+  letter-spacing: 1px;
+}
+
+.search-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.search-bar select,
+.search-bar input {
+  border-radius: 8px;
+  border: 1px solid #d0d7de;
+  padding: 8px 14px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.search-bar input:focus,
+.search-bar select:focus {
+  border: 1.5px solid #296ed6;
+}
+
+.minimal-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #f9fbfd;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.04);
+}
+
+.minimal-table th, .minimal-table td {
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.minimal-table th {
+  background: #f1f6fb;
+  color: #296ed6;
+  font-size: 1.08rem;
+  font-weight: 700;
+  border-bottom: 2px solid #e3eaf2;
+}
+
+.minimal-table td {
+  background: #fff;
+  font-size: 1rem;
+  color: #222;
+  border-bottom: 1px solid #f1f6fb;
+}
+
+.minimal-table tr:last-child td {
+  border-bottom: none;
+}
+
+.badge-status {
+  font-size: 0.98rem;
+  padding: 4px 16px;
+  border-radius: 16px;
+  font-weight: 600;
+  display: inline-block;
+  letter-spacing: 0.5px;
+}
+
+.badge-issued { background: #fff7e0; color: #e6a700; border: 1px solid #ffe082; }
+.badge-returned { background: #e6f9e6; color: #1e7d34; border: 1px solid #b2dfdb; }
+.badge-overdue { background: #ffeaea; color: #d32f2f; border: 1px solid #ffcdd2; }
+
+@media (max-width: 900px) {
+  .issued-books-container { padding: 18px 4px; }
+  .issued-books-title { font-size: 1.3rem; }
+  .minimal-table th, .minimal-table td { padding: 8px 6px; font-size: 0.95rem; }
+}

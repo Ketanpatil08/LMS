@@ -1,51 +1,64 @@
 <link rel="stylesheet" href="/styles/adminSidebar.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<div class="sidebar-dark d-flex flex-column" style="height: 100vh;">
-  <div class="sidebar-logo d-flex align-items-center justify-content-between">
-    <div>
-      <img src="/images/library.jpg" alt="Library Logo" class="logo-img">
-      <span class="logo-text">Library Admin</span>
-    </div>
-    <!-- <a href="/" class="home-icon" title="Go to Home">
-      <i class="fa-solid fa-house"></i>
-    </a> -->
+<div class="sidebar-dark d-flex flex-column">
+  <div class="sidebar-logo">
+    <img src="/images/library.jpg" alt="Library Logo" class="logo-img">
+    <span class="logo-text">Library Admin</span>
   </div>
   <div class="sidebar-section flex-grow-1">
     <div class="sidebar-group">
+      <a href="/admin/dashboard" class="sidebar-link">
+        <span class="sidebar-emoji">📊</span> Dashboard
+      </a>
+    </div>
+    <div class="sidebar-group">
       <div class="sidebar-title" onclick="toggleSidebarMenu('userMenu')">
-        <i class="fa-solid fa-users-gear"></i> User
+        <span class="sidebar-emoji">👥</span> User
         <i class="fa-solid fa-chevron-down chevron"></i>
       </div>
       <div class="sidebar-menu" id="userMenu">
-        <a href="/addUser"><i class="fa-solid fa-user-plus"></i> Add User</a>
-        <a href="/viewUsers"><i class="fa-solid fa-users"></i> View User</a>
+        <a href="/addUser"><span class="sidebar-emoji">➕</span> Add User</a>
+        <a href="/viewUsers"><span class="sidebar-emoji">👤</span> View User</a>
       </div>
     </div>
     <div class="sidebar-group">
       <div class="sidebar-title" onclick="toggleSidebarMenu('categoryMenu')">
-        <i class="fa-solid fa-layer-group"></i> Category
+        <span class="sidebar-emoji">🗂️</span> Category
         <i class="fa-solid fa-chevron-down chevron"></i>
       </div>
       <div class="sidebar-menu" id="categoryMenu">
-        <a href="/addCategory"><i class="fa-solid fa-folder-plus"></i> Add Category</a>
-        <a href="/viewCategories"><i class="fa-solid fa-folder-open"></i> View Categories</a>
+        <a href="/addCategory"><span class="sidebar-emoji">➕</span> Add Category</a>
+        <a href="/viewCategories"><span class="sidebar-emoji">📂</span> View Categories</a>
       </div>
     </div>
     <div class="sidebar-group">
       <div class="sidebar-title" onclick="toggleSidebarMenu('bookMenu')">
-        <i class="fa-solid fa-book"></i> Book
+        <span class="sidebar-emoji">📚</span> Book
         <i class="fa-solid fa-chevron-down chevron"></i>
       </div>
       <div class="sidebar-menu" id="bookMenu">
-        <a href="/addBook"><i class="fa-solid fa-book-medical"></i> Add Book</a>
-        <a href="/admin/books"><i class="fa-solid fa-book-open"></i> View Books</a>
+        <a href="/addBook"><span class="sidebar-emoji">➕</span> Add Book</a>
+        <a href="/admin/books"><span class="sidebar-emoji">📖</span> View Books</a>
       </div>
+    </div>
+    <div class="sidebar-group">
+      <a href="/admin/issue-book" class="sidebar-link">
+        <span class="sidebar-emoji">📝</span> Issue Book
+      </a>
+    </div>
+    <div class="sidebar-group">
+      <a href="/admin/issued-books" class="sidebar-link">
+        <span class="sidebar-emoji">📦</span> Issued Books
+      </a>
+      <a href="/admin/returned-books" class="sidebar-link">
+        <span class="sidebar-emoji">🔄</span> Returned Books
+      </a>
     </div>
   </div>
   <div class="sidebar-logout mb-3">
     <a href="/logout" class="logout-btn">
-      <i class="fa-solid fa-right-from-bracket"></i> Logout
+      <span class="sidebar-emoji">🚪</span> Logout
     </a>
   </div>
 </div>
