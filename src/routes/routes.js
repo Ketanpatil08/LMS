@@ -30,10 +30,7 @@ router.get('/admin/books', ctrl.viewBooks);
 router.get('/admin/books/update/:id', ctrl.updateBookPage);
 router.post('/admin/books/update/:id', ctrl.updateBook);
 router.post('/admin/books/delete/:id', ctrl.deleteBook);
-<<<<<<< HEAD
 
-module.exports = router;
-=======
 router.get('/logout', ctrl.logout); // Added logout route
 router.get('/admin/issue-book', ctrl.issueBookPage);
 router.post('/admin/issue-book', ctrl.issueBook);
@@ -43,4 +40,4 @@ router.post('/admin/return-book/:id', ctrl.returnBook);
 
 module.exports = router;
 
->>>>>>> f862d852df984071e3c0f084bc5148e3e57c5590
+
