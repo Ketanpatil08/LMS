@@ -263,9 +263,7 @@ exports.logout = (req, res) => {
 //   const [categories] = await db.promise().query('SELECT * FROM categories LIMIT ? OFFSET ?', [limit, offset]);
 
 //   res.render('viewCategories', { categories, page, totalPages });
-<<<<<<< HEAD
 // };
-=======
 // };
 
 // Show Issue Book form
@@ -367,4 +365,4 @@ exports.returnedBooksPage = async (req, res) => {
   res.render('returnedBooks', { issues: rows });
 };
 
->>>>>>> f862d852df984071e3c0f084bc5148e3e57c5590
+
