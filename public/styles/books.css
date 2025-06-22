@@ -1,0 +1,62 @@
+/* Minimal book grid styles */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 28px;
+}
+
+.book-card {
+  background: #f8fafc;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+  padding: 22px 18px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: box-shadow 0.2s;
+}
+
+.book-card:hover {
+  box-shadow: 0 6px 24px rgba(44,62,80,0.12);
+}
+
+.book-icon {
+  font-size: 2.1rem;
+  color: #296ed6;
+  margin-bottom: 10px;
+}
+
+.book-title {
+  font-weight: 700;
+  font-size: 1.13rem;
+  margin-bottom: 6px;
+  color: #222;
+}
+
+.book-author {
+  font-size: 0.98rem;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.book-meta {
+  font-size: 0.93rem;
+  color: #666;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.book-category {
+  color: #296ed6;
+}
+
+.book-available {
+  color: #2ecc40;
+  font-weight: 600;
+}
+
+.book-unavailable {
+  color: #d32f2f;
+  font-weight: 600;
+}

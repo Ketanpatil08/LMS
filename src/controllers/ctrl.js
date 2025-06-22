@@ -3,6 +3,12 @@ const User = require('../model/model');
 const Category = require('../model/categoryModel');
 const Book = require('../model/bookModel'); // Add this at the top
 const db = require('../config/db');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser'); // Add this in your app.js
+const userModel = require('../model/userModel');
+const issuedBookModel = require('../model/issuedBookModel');
+
+const JWT_SECRET = 'your_secret_key'; // Use env variable in production
 
 exports.homePage = (req, res) => {
     res.render("home");
@@ -12,18 +18,34 @@ exports.loginPage = (req, res) => {
     res.render("login.ejs");
 };
 
-exports.userLogin=(req,res)=>{
-    let {username,password}=req.body;
-    if(username==="admin" && password==="admin@123")
-    {
-        res.render('adminDashboard');
-    }
-    else
-    {
-        res.render('adminLogin',{error:"Invalid Credentials"});
+exports.userLogin = async (req, res) => {
+    const { username, password } = req.body;
 
+    console.log('username:', username, 'password:', password);
+
+    // Admin login check (use strict equality and correct password)
+    if (username === "admin" && password === "admin@123") {
+        // Optionally set admin JWT here if you want
+        // const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '2h' });
+        // res.cookie('token', token, { httpOnly: true });
+        return res.redirect('/admin/dashboard');
+    } else {
+        // User login check
+        const [users] = await db.promise().query('SELECT * FROM users WHERE email = ?', [username]);
+        if (users.length === 0) {
+            return res.render('login', { error: "Invalid Credentials" });
+        }
+        const user = users[0];
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.render('login', { error: "Invalid Credentials" });
+        }
+        // Create JWT for user
+        const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '2h' });
+        res.cookie('token', token, { httpOnly: true });
+        res.redirect('/user/dashboard');
     }
-}
+};
 
 
 exports.adminDashboardPage = async (req, res) => {
@@ -143,28 +165,23 @@ exports.addBookPage = async (req, res) => {
 
 // POST: Handle Add Book form submission
 exports.addBook = async (req, res) => {
-  const { title, author, publisher, isbn, total_copies, available_copies, status, image } = req.body;
-  let categories = req.body.categories; // Will be an array if multiple selected
+  try {
+    const { title, author, publisher, isbn, categories, total_copies, available_copies, status } = req.body;
+    // If using multiple categories, handle accordingly; here, assume single category for simplicity
+    const category = Array.isArray(categories) ? categories[0] : categories;
 
-  // Insert the book
-  const [result] = await db.promise().query(
-    'INSERT INTO books (title, author, publisher, isbn, total_copies, available_copies, status, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-    [title, author, publisher, isbn, total_copies, available_copies, status, image]
-  );
-  const book_id = result.insertId;
+    // Multer puts the file info in req.file
+    const image = req.file ? `/uploads/books/${req.file.filename}` : null;
 
-  // Ensure categories is always an array
-  if (!Array.isArray(categories)) categories = [categories];
-
-  // Insert into book_categories
-  for (const category_id of categories) {
     await db.promise().query(
-      'INSERT INTO book_categories (book_id, category_id) VALUES (?, ?)',
-      [book_id, category_id]
+      "INSERT INTO books (title, author, publisher, isbn, category, total_copies, available_copies, status, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [title, author, publisher, isbn, category, total_copies, available_copies, status, image]
     );
+    res.redirect('/admin/books');
+  } catch (err) {
+    console.error(err);
+    res.render('addBook', { message: 'Error adding book', messageType: 'error' });
   }
-
-  res.redirect('/admin/books');
 };
 
 exports.viewBooks = async (req, res) => {
@@ -193,12 +210,26 @@ exports.updateBookPage = async (req, res) => {
 
 // Handle update
 exports.updateBook = async (req, res) => {
-  const { title, author, publisher, isbn, category, total_copies, available_copies, status, image } = req.body;
-  await db.promise().query(
-    'UPDATE books SET title=?, author=?, publisher=?, isbn=?, category=?, total_copies=?, available_copies=?, status=?, image=? WHERE id=?',
-    [title, author, publisher, isbn, category, total_copies, available_copies, status, image, req.params.id]
-  );
-  res.redirect('/admin/books');
+  try {
+    const { title, author, publisher, isbn, categories, total_copies, available_copies, status } = req.body;
+    const bookId = req.params.id;
+
+    // Get current image path from DB
+    const [rows] = await db.promise().query("SELECT image FROM books WHERE id = ?", [bookId]);
+    const currentImage = rows[0]?.image || null;
+
+    // If a new image is uploaded, use it; otherwise, keep the old one
+    const image = req.file ? `/uploads/books/${req.file.filename}` : currentImage;
+
+    await db.promise().query(
+      "UPDATE books SET title=?, author=?, publisher=?, isbn=?, category=?, total_copies=?, available_copies=?, status=?, image=? WHERE id=?",
+      [title, author, publisher, isbn, categories, total_copies, available_copies, status, image, bookId]
+    );
+    res.redirect('/admin/books');
+  } catch (err) {
+    console.error(err);
+    res.render('updateBook', { message: 'Error updating book', messageType: 'error', book: req.body });
+  }
 };
 
 exports.deleteBook = async (req, res) => {
@@ -364,5 +395,71 @@ exports.returnedBooksPage = async (req, res) => {
   `);
   res.render('returnedBooks', { issues: rows });
 };
+
+exports.userDashboardPage = async (req, res) => {
+    const userId = req.user.id;
+    const userName = req.user.name;
+    // Get stats for this user
+    const [[{ issued }]] = await db.promise().query(
+        "SELECT COUNT(*) AS issued FROM issue_details WHERE issued_by=? AND status='issued'", [userId]
+    );
+    const [[{ returned }]] = await db.promise().query(
+        "SELECT COUNT(*) AS returned FROM issue_details WHERE issued_by=? AND status='returned'", [userId]
+    );
+    const [[{ overdue }]] = await db.promise().query(
+        "SELECT COUNT(*) AS overdue FROM issue_details WHERE issued_by=? AND status='overdue'", [userId]
+    );
+    res.render('userDashboard', {
+        userName,
+        issued,
+        returned,
+        overdue
+    });
+};
+
+exports.getUserProfile = async (req, res) => {
+  console.log('req.user:', req.user); // <--- Place it here
+  try {
+    const user = await userModel.getUserById(req.user.id);
+    if (!user) {
+      return res.status(404).render("error", { message: "User not found" });
+    }
+    res.render("userProfile", { user });
+  } catch (err) {
+    console.error(err); // Add this line
+    res.status(500).render("error", { message: "Server error" });
+  }
+};
+
+exports.getUserBooks = async (req, res) => {
+  try {
+    const [rows] = await db.promise().query(
+      "SELECT title, author, category, available_copies, status, image FROM books"
+    );
+    const books = rows.map(book => ({
+      title: book.title,
+      author: book.author,
+      category: book.category || 'Unknown',
+      available: book.status === 'available' && book.available_copies > 0,
+      image: book.image // Make sure this is included!
+    }));
+    res.render('userBooks', { books });
+  } catch (err) {
+    console.error(err);
+    res.status(500).render('error', { message: "Server error" });
+  }
+};
+
+exports.getUserIssuedBooks = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const issuedBooks = await issuedBookModel.getIssuedBooksByUserId(userId);
+    res.render('userIssuedBooks', { issuedBooks });
+  } catch (err) {
+    console.error(err);
+    res.status(500).render('error', { message: "Server error" });
+  }
+};
+
 
 

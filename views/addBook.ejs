@@ -23,7 +23,7 @@
         <% if (typeof message !== 'undefined' && message) { %>
           <div class="msg <%= messageType %>"><%= message %></div>
         <% } %>
-        <form action="/admin/books/add" method="POST">
+        <form action="/admin/books/add" method="POST" enctype="multipart/form-data">
           <div class="form-row">
             <div class="form-group col-md-6">
               <input type="text" name="title" class="form-control" placeholder="Enter book title" required>
@@ -65,7 +65,7 @@
           </div>
           <div class="form-row">
             <div class="form-group col-md-12">
-              <input type="text" name="image" class="form-control" placeholder="Enter image URL">
+              <input type="file" name="image" class="form-control" accept="image/*" required>
             </div>
           </div>
          

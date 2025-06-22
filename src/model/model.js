@@ -10,15 +10,11 @@ exports.getAllUsers = async () => {
     return rows;
 };
 
-
-// Get user by ID
 exports.getUserById = async (id) => {
-    const [rows] = await db.promise().query("SELECT * FROM users WHERE id = ?", [id]); // ✅ FIXED
+    const [rows] = await db.promise().query("SELECT * FROM users WHERE id = ?", [id]);
     return rows[0];
 };
 
-
-// Update user
 exports.updateUser = async (id, updatedUser) => {
     const { name, email, role } = updatedUser;
     await db.promise().query("UPDATE users SET name=?, email=?, role=? WHERE id=?", [name, email, role, id]);
