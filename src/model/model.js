@@ -10,33 +10,18 @@ exports.getAllUsers = async () => {
     return rows;
 };
 
-
-// Get user by ID
 exports.getUserById = async (id) => {
-    const [rows] = await db.promise().query("SELECT * FROM users WHERE id = ?", [id]); // ✅ FIXED
+    const [rows] = await db.promise().query("SELECT * FROM users WHERE id = ?", [id]);
     return rows[0];
 };
 
-
-// Update user
 exports.updateUser = async (id, updatedUser) => {
     const { name, email, role } = updatedUser;
     await db.promise().query("UPDATE users SET name=?, email=?, role=? WHERE id=?", [name, email, role, id]);
 };
 
-// Delete user by ID
 exports.deleteUserById = async (id) => {
     await db.promise().query("DELETE FROM users WHERE id = ?", [id]);
-};
-
-const deleteCategoryById = (id) => {
-    return db.query("DELETE FROM category WHERE id = ?", [id]);
-};
-
-// Export it
-module.exports = {
-    deleteCategoryById,
-    // other exported functions like getAllCategories, addCategory etc.
 };
 
 

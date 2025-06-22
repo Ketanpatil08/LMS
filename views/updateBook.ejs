@@ -9,7 +9,7 @@
 <body class="bg-light">
   <div class="container min-vh-100 d-flex justify-content-center align-items-center">
     <div class="update-book-container">
-      <form class="update-book-form" action="/admin/books/update/<%= book.id %>" method="POST">
+      <form class="update-book-form" action="/admin/books/update/<%= book.id %>" method="POST" enctype="multipart/form-data">
         <h2>Update Book</h2>
         <div class="form-row">
           <div class="form-group">
@@ -63,6 +63,19 @@
             <label for="image">Image URL</label>
             <input id="image" type="text" name="image" class="form-control" value="<%= book.image %>">
           </div>
+        </div>
+        <div class="form-group">
+          <label>Current Image:</label><br>
+          <% if (book.image) { %>
+            <img src="<%= book.image %>" alt="Book Image" style="max-width:100px;">
+          <% } else { %>
+            <span>No image</span>
+          <% } %>
+        </div>
+        <div class="form-group">
+          <label>Change Image:</label>
+          <input type="file" name="image" class="form-control" accept="image/*">
+          <small>(Leave blank to keep current image)</small>
         </div>
         <button type="submit" class="btn btn-primary">Update Book</button>
       </form>

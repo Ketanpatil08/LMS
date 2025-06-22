@@ -1,0 +1,86 @@
+.user-dashboard-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 32px 24px;
+  background: #f8fafc;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(44, 62, 80, 0.08);
+}
+
+.main-content {
+  flex: 1;
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 40px 0 0 0;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 32px auto 0 auto;
+  padding: 32px 32px 24px 32px;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 32px rgba(44,62,80,0.07);
+}
+
+.welcome-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 18px 24px;
+  margin-bottom: 28px;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+}
+
+.welcome-card i {
+  font-size: 2.2rem;
+  color: #296ed6;
+}
+
+.welcome-title {
+  font-weight: 700;
+  color: #296ed6;
+  font-size: 1.25rem;
+}
+
+.welcome-desc {
+  color: #444;
+  font-size: 1rem;
+}
+
+.dashboard-cards {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.dashboard-card {
+  flex: 1 1 0;
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 32px 0;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+}
+
+.dashboard-card-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.dashboard-card.issued .dashboard-card-title { color: #296ed6; }
+.dashboard-card.returned .dashboard-card-title { color: #2ecc40; }
+.dashboard-card.overdue .dashboard-card-title { color: #d32f2f; }
+
+.dashboard-card-value {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-top: 6px;
+  color: #222;
+}
