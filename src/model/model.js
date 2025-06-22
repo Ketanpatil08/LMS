@@ -24,8 +24,7 @@ exports.updateUser = async (id, updatedUser) => {
     await db.promise().query("UPDATE users SET name=?, email=?, role=? WHERE id=?", [name, email, role, id]);
 };
 
-
-
-
-
-
+// Delete user by ID
+exports.deleteUserById = async function(id) {
+    return db.promise().query('DELETE FROM users WHERE id = ?', [id]);
+};
