@@ -10,9 +10,14 @@
     <div class="login-bg">
         <div class="login-container">
             <h4>Please login to your account</h4>
+            <% if (typeof error !== 'undefined' && error) { %>
+              <div style="color:#d32f2f; background:#ffeaea; border-radius:8px; padding:10px 0; margin-bottom:18px;">
+                <%= error %>
+              </div>
+            <% } %>
             <form action="/userLogin" method="POST">
-                <input type="text" placeholder="Username" required>
-                <input type="password" placeholder="Password" required>
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
                 <button type="submit">LOG IN</button>
             </form>
         </div>
